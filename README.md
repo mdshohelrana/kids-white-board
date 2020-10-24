@@ -1,4 +1,4 @@
-ct# My Pain Log
+# My Interactive Design Board
 
 
 ## Installation
