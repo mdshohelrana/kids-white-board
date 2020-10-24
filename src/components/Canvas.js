@@ -6,9 +6,9 @@ import {
     clearSelection,
     createCircle,
     createRectangle,
+    createSquare,
     saveDiagram,
     reset,
-    createSquare,
 } from "../states/state";
 import {DRAG_DATA_KEY, SHAPE_TYPES} from "../constants/constants";
 import {Shape} from "./Shape";

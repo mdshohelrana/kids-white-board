@@ -37,7 +37,7 @@ export const reset = () => {
 export const createSquare = ({x, y}) => {
     setState((state) => {
         state.shapes[nanoid()] = {
-            type: SHAPE_TYPES.RECT,
+            type: SHAPE_TYPES.SQUARE,
             width: DEFAULTS.SQUARE.WIDTH,
             height: DEFAULTS.SQUARE.HEIGHT,
             fill: DEFAULTS.SQUARE.FILL,
@@ -85,8 +85,8 @@ export const selectShape = (id) => {
         state.selected = id;
         const tempState = useShapes.get();
 
-        Object.entries(tempState.shapes).forEach(([key, value]) => {
-            const shape = tempState.shapes[key];
+        Object.entries(tempState.shapes).forEach(([,]) => {
+            const shape = tempState.shapes[id];
             if (shape.type === SHAPE_TYPES.RECT) {
                 playAudio(Rectangle);
 
@@ -128,6 +128,44 @@ export const updateAttribute = (attr, value) => {
 };
 
 export const transformRectangleShape = (node, id, event) => {
+    // transformer is changing scale of the node
+    // and NOT its width or height
+    // but in the store we have only width and height
+    // to match the data better we will reset scale on transform end
+    const scaleX = node.scaleX();
+    const scaleY = node.scaleY();
+
+    // we will reset the scale back
+    node.scaleX(1);
+    node.scaleY(1);
+
+    setState((state) => {
+        const shape = state.shapes[id];
+
+        if (shape) {
+            shape.x = node.x();
+            shape.y = node.y();
+
+            shape.rotation = node.rotation();
+
+            shape.width = clamp(
+                // increase the width in order of the scale
+                node.width() * scaleX,
+                // should not be less than the minimum width
+                LIMITS.RECT.MIN,
+                // should not be more than the maximum width
+                LIMITS.RECT.MAX
+            );
+            shape.height = clamp(
+                node.height() * scaleY,
+                LIMITS.RECT.MIN,
+                LIMITS.RECT.MAX
+            );
+        }
+    });
+};
+
+export const transformSquareShape = (node, id, event) => {
     // transformer is changing scale of the node
     // and NOT its width or height
     // but in the store we have only width and height
