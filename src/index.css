@@ -24,6 +24,10 @@ aside {
     width: 250px;
 }
 
+.capitalize {
+    text-transform: capitalize;
+}
+
 .palette {
     display: flex;
     flex-direction: column;

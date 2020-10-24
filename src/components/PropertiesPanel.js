@@ -20,7 +20,7 @@ export function PropertiesPanel() {
                 {selectedShape ? (
                     <>
                         <div className="key">
-                            Type <span className="value">{selectedShape.type}</span>
+                            Type <span className="value capitalize">{selectedShape.type}</span>
                         </div>
 
                         <div className="key">
@@ -35,7 +35,7 @@ export function PropertiesPanel() {
                         </div>
 
                         <div className="key">
-                            Fill{" "}
+                            Background Color{" "}
                             <input
                                 className="value"
                                 name="fill"
